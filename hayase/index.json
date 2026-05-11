@@ -2,33 +2,29 @@
   {
     "id": "hayase.extension.nyaa",
     "name": "Nyaa",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "type": "torrent",
     "accuracy": "medium",
     "ratio": 0,
     "media": "sub",
-    "languages": [
-      "all"
-    ],
+    "languages": ["all"],
     "nsfw": false,
     "icon": "https://nyaa.si/static/favicon.png",
-    "update": "https://raw.githubusercontent.com/ReWelp/HayasexShiru-Extensions/main/hayase/index.json",
-    "code": "https://raw.githubusercontent.com/ReWelp/HayasexShiru-Extensions/main/hayase/nyaa.js"
+    "update": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/index.json",
+    "code": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/nyaa.js"
   },
   {
     "id": "hayase.extension.sukebei",
     "name": "Sukebei",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "type": "torrent",
     "accuracy": "medium",
     "ratio": 0,
     "media": "both",
-    "languages": [
-      "all"
-    ],
+    "languages": ["all"],
     "nsfw": true,
     "icon": "https://sukebei.nyaa.si/static/favicon.png",
-    "update": "https://raw.githubusercontent.com/ReWelp/HayasexShiru-Extensions/main/hayase/index.json",
-    "code": "https://raw.githubusercontent.com/ReWelp/HayasexShiru-Extensions/main/hayase/sukebei.js"
+    "update": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/index.json",
+    "code": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/sukebei.js"
   }
 ]
