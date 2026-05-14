@@ -15,8 +15,63 @@ export default async function handler(req, res) {
   }
 
   const allowedSources = { nyaasi: 'nyaa.si', sukebei: 'sukebei.nyaa.si' }
+
+  // Animetosho search
+  if (source === 'animetosho') {
+    const searchUrl = `https://animetosho.org/search/anime?q=${encodeURIComponent(query)}&submit`
+    try {
+      const html = await fetch(searchUrl)
+      if (!html.ok) {
+        res.status(html.status).json({ error: 'Animetosho fetch failed' })
+        return
+      }
+
+      const body = await html.text()
+      const entries = body.split('class="home_list_entry').slice(1)
+
+      const results = entries.map(entry => {
+        const extract = (pattern) => {
+          const m = entry.match(pattern)
+          return m ? m[1] : ''
+        }
+
+        const title = extract(/<div class="link"><a href="[^"]*">([^<]*)</a><\/div>/)
+        const magnetRaw = extract(/<a href="(magnet:[^"]*?)" class="dllink">/) || extract(/href="(magnet:[^"]*?)">Magnet</a>/)
+        const magnet = magnetRaw.replace(/&amp;/g, '&').replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code)))
+        const hashMatch = magnet.match(/btih:([A-Z2-7]+)/i)
+        const hash = hashMatch ? hashMatch[1] : ''
+
+        const sizeBytes = extract(/Total file size: ([\d,]+) bytes/)
+        const sizeReadable = extract(/<div class="size"[^>]*>([^<]*)</)
+
+        const dateRaw = extract(/Date\/time submitted: ([^"]*)/)
+        const seeders = extract(/\[(\d+)↑/) || extract(/\[(\d+)&#8593;/)
+        const leechers = extract(/\[(\d+)↓/) || extract(/\[(\d+)&#8595;/)
+
+        const pageLink = extract(/<div class="link"><a href="([^"]*)"/)
+
+        return {
+          Name: title,
+          Magnet: magnet,
+          hash,
+          Seeders: seeders || 0,
+          Leechers: leechers || 0,
+          Size: sizeReadable || '',
+          SizeBytes: parseInt(sizeBytes.replace(/,/g, '')) || 0,
+          DateUploaded: dateRaw || '',
+          Page: pageLink
+        }
+      }).filter(r => r.Name && r.Magnet)
+
+      res.json(results)
+    } catch (err) {
+      res.status(500).json({ error: err.message })
+    }
+    return
+  }
+
   if (!allowedSources[source]) {
-    res.status(400).json({ error: 'Invalid source. Use: nyaasi or sukebei' })
+    res.status(400).json({ error: 'Invalid source. Use: nyaasi, sukebei, or animetosho' })
     return
   }
 

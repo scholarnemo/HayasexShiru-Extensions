@@ -2,7 +2,7 @@
   {
     "id": "hayase.extension.nyaa",
     "name": "Nyaa",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "type": "torrent",
     "accuracy": "medium",
     "ratio": 0,
@@ -16,7 +16,7 @@
   {
     "id": "hayase.extension.sukebei",
     "name": "Sukebei",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "type": "torrent",
     "accuracy": "medium",
     "ratio": 0,
@@ -26,5 +26,19 @@
     "icon": "https://sukebei.nyaa.si/static/favicon.png",
     "update": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/index.json",
     "code": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/sukebei.js"
+  },
+  {
+    "id": "hayase.extension.animetosho",
+    "name": "Animetosho",
+    "version": "1.0.0",
+    "type": "torrent",
+    "accuracy": "medium",
+    "ratio": 0,
+    "media": "both",
+    "languages": ["all"],
+    "nsfw": false,
+    "icon": "https://animetosho.org/inc/favicon.ico?cache=37381f97e8ac6694b319d0fef817662b",
+    "update": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/index.json",
+    "code": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/animetosho.js"
   }
 ]
