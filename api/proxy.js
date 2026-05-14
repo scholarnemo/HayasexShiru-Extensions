@@ -16,52 +16,56 @@ export default async function handler(req, res) {
 
   const allowedSources = { nyaasi: 'nyaa.si', sukebei: 'sukebei.nyaa.si' }
 
-  // Animetosho search
   if (source === 'animetosho') {
-    const searchUrl = `https://animetosho.org/search/anime?q=${encodeURIComponent(query)}&submit`
+    const searchUrl = 'https://animetosho.org/search/anime?q=' + encodeURIComponent(query) + '&submit'
     try {
-      const html = await fetch(searchUrl)
-      if (!html.ok) {
-        res.status(html.status).json({ error: 'Animetosho fetch failed' })
+      const htmlResp = await fetch(searchUrl)
+      if (!htmlResp.ok) {
+        res.status(htmlResp.status).json({ error: 'Animetosho fetch failed' })
         return
       }
 
-      const body = await html.text()
+      const body = await htmlResp.text()
       const entries = body.split('class="home_list_entry').slice(1)
 
-      const results = entries.map(entry => {
-        const extract = (pattern) => {
-          const m = entry.match(pattern)
-          return m ? m[1] : ''
+      const results = []
+      for (const entry of entries) {
+        try {
+          const extract = (pattern) => {
+            const m = entry.match(pattern)
+            return m && m[1] ? m[1] : ''
+          }
+
+          const title = extract(/<div class="link"><a href="[^"]*">([^<]*)<\/a><\/div>/)
+          if (!title) continue
+
+          const magnetLink = extract(/href="(magnet:[^"]*)">Magnet<\/a>/)
+          if (!magnetLink) continue
+          const magnet = magnetLink.replace(/&amp;/g, '&').replace(/&#(\d+);/g, (_, c) => String.fromCharCode(parseInt(c)))
+          const hashM = magnet.match(/btih:([A-Z2-7]+)/i)
+
+          const sizeB = extract(/Total file size: ([\d,]+) bytes/)
+          const sizeR = extract(/<div class="size"[^>]*>([^<]*)</)
+          const dateR = extract(/Date\/time submitted: ([^"]*)/)
+
+          const seeders = entry.match(/\[(\d+)&#8593;/)
+          const leechers = entry.match(/\[(\d+)&#8595;/)
+
+          results.push({
+            Name: title,
+            Magnet: magnet,
+            hash: hashM ? hashM[1] : '',
+            Seeders: seeders ? seeders[1] : 0,
+            Leechers: leechers ? leechers[1] : 0,
+            Size: sizeR || '',
+            SizeBytes: parseInt(sizeB.replace(/,/g, ''), 10) || 0,
+            DateUploaded: dateR || '',
+            Page: extract(/<div class="link"><a href="([^"]*)"/)
+          })
+        } catch (e) {
+          // skip bad entry
         }
-
-        const title = extract(/<div class="link"><a href="[^"]*">([^<]*)</a><\/div>/)
-        const magnetRaw = extract(/<a href="(magnet:[^"]*?)" class="dllink">/) || extract(/href="(magnet:[^"]*?)">Magnet</a>/)
-        const magnet = magnetRaw.replace(/&amp;/g, '&').replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code)))
-        const hashMatch = magnet.match(/btih:([A-Z2-7]+)/i)
-        const hash = hashMatch ? hashMatch[1] : ''
-
-        const sizeBytes = extract(/Total file size: ([\d,]+) bytes/)
-        const sizeReadable = extract(/<div class="size"[^>]*>([^<]*)</)
-
-        const dateRaw = extract(/Date\/time submitted: ([^"]*)/)
-        const seeders = extract(/\[(\d+)↑/) || extract(/\[(\d+)&#8593;/)
-        const leechers = extract(/\[(\d+)↓/) || extract(/\[(\d+)&#8595;/)
-
-        const pageLink = extract(/<div class="link"><a href="([^"]*)"/)
-
-        return {
-          Name: title,
-          Magnet: magnet,
-          hash,
-          Seeders: seeders || 0,
-          Leechers: leechers || 0,
-          Size: sizeReadable || '',
-          SizeBytes: parseInt(sizeBytes.replace(/,/g, '')) || 0,
-          DateUploaded: dateRaw || '',
-          Page: pageLink
-        }
-      }).filter(r => r.Name && r.Magnet)
+      }
 
       res.json(results)
     } catch (err) {
@@ -76,7 +80,7 @@ export default async function handler(req, res) {
   }
 
   const category = source === 'sukebei' ? 'c=1_3' : 'c=1_0'
-  const rssUrl = `https://${allowedSources[source]}/?page=rss&${category}&q=${encodeURIComponent(query)}`
+  const rssUrl = 'https://' + allowedSources[source] + '/?page=rss&' + category + '&q=' + encodeURIComponent(query)
 
   try {
     const rss = await fetch(rssUrl)
@@ -89,8 +93,8 @@ export default async function handler(req, res) {
     const items = xml.split('<item>').slice(1)
     const results = items.map(item => {
       const extract = (tag) => {
-        const s = item.indexOf(`<${tag}>`)
-        const e = item.indexOf(`</${tag}>`)
+        const s = item.indexOf('<' + tag + '>')
+        const e = item.indexOf('</' + tag + '>')
         return s >= 0 && e > s ? item.slice(s + tag.length + 2, e) : ''
       }
 
@@ -101,7 +105,7 @@ export default async function handler(req, res) {
 
       return {
         Name: title,
-        Magnet: hash ? `magnet:?xt=urn:btih:${hash}` : '',
+        Magnet: hash ? 'magnet:?xt=urn:btih:' + hash : '',
         Seeders: extract('nyaa:seeders'),
         Leechers: extract('nyaa:leechers'),
         Downloads: extract('nyaa:downloads'),
