@@ -31,7 +31,7 @@ export default new class Sukebei {
         date: new Date(item.DateUploaded),
         accuracy: 'medium',
         type: 'alt'
-      }))
+      })).filter(r => matchesEpisode(r.title, episode))
     } catch {
       return []
     }
@@ -46,3 +46,14 @@ export default new class Sukebei {
     }
   }
 }()
+
+function matchesEpisode(title, ep) {
+  if (!ep) return true
+  const p = String(ep).padStart(2, '0')
+  return new RegExp(
+    '[Ee][Pp]?\\.?\\s*' + p + '\\b|' +
+    '[Ee]\\s*' + ep + '\\b|' +
+    '(?:^|[-\\s])' + p + '(?=[-\\s\\[\\]])|' +
+    '(?:^|[-\\s])' + ep + '(?=[-\\s\\[\\]])'
+  ).test(title)
+}
