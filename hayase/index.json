@@ -2,7 +2,7 @@
   {
     "id": "hayase.extension.nyaa",
     "name": "Nyaa",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "type": "torrent",
     "accuracy": "medium",
     "ratio": 0,
@@ -16,7 +16,7 @@
   {
     "id": "hayase.extension.sukebei",
     "name": "Sukebei",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "type": "torrent",
     "accuracy": "medium",
     "ratio": 0,
@@ -30,7 +30,7 @@
   {
     "id": "hayase.extension.animetosho",
     "name": "Animetosho",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "type": "torrent",
     "accuracy": "medium",
     "ratio": 0,

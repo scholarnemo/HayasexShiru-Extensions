@@ -12,7 +12,8 @@ export default new class Sukebei {
   async search(title, episode) {
     try {
       let query = title.replace(/[^\w\s-]/g, ' ').trim()
-      if (episode) query += ` ${episode.toString().padStart(2, '0')}`
+      let words = query.split(/\s+/).filter(Boolean)
+      if (words.length > 3) query = words.slice(0, 3).join(' ')
 
       const res = await fetch(this.base + encodeURIComponent(query))
       if (!res.ok) return []
