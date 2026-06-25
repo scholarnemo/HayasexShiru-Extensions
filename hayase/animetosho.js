@@ -1,5 +1,5 @@
 export default new class Animetosho {
-  base = 'https://hayase-nyaa-proxy-p3fdsi4as-seirios-projects.vercel.app/api/animetosho/'
+  base = 'https://hayase-nyaa-proxy.vercel.app/api/animetosho/'
 
   async single({ titles, episode }) {
     if (!titles?.length) return []
