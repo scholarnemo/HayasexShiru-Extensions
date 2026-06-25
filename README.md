@@ -20,16 +20,16 @@ Includes **Nyaa** and **Sukebei** support.
 
 Paste this URL into **Settings → Extensions → Repositories**:
 
-https://raw.githubusercontent.com/ReWelp/HayasexShiru-Extensions/main/hayase/index.json
+https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/index.json
 
 
 ### Shiru
 
 Paste this URL into **Settings → Extensions → Sources**:
 
-https://raw.githubusercontent.com/ReWelp/HayasexShiru-Extensions/main/shiru/index.json
+https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/shiru/index.json
 
-| Alternatively | `gh:ReWelp/HayasexShiru-Extensions/shiru` |
+| Alternatively | `gh:scholarnemo/HayasexShiru-Extensions/shiru` |
 
 // note: *you must enable Adult Content (Hentai) in settings to be able to use Sukebei on Shiru.*
 
