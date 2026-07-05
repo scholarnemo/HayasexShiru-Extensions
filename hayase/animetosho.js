@@ -13,7 +13,7 @@ export default new class Animetosho {
     try {
       let query = title.replace(/[^\w\s-]/g, ' ').trim()
       let words = query.split(/\s+/).filter(Boolean)
-      if (words.length > 3) query = words.slice(0, 3).join(' ')
+      if (words.length > 5) query = words.slice(0, 5).join(' ')
 
       const res = await fetch(this.base + encodeURIComponent(query))
       if (!res.ok) return []
@@ -31,7 +31,7 @@ export default new class Animetosho {
         date: item.DateUploaded ? new Date(item.DateUploaded) : new Date(),
         accuracy: 'medium',
         type: 'alt'
-      })).filter(r => matchesEpisode(r.title, episode))
+      })).filter(r => matchesEpisode(r.title, episode, title))
     } catch {
       return []
     }
@@ -47,13 +47,21 @@ export default new class Animetosho {
   }
 }()
 
-function matchesEpisode(title, ep) {
+function matchesEpisode(title, ep, queryTitle) {
   if (!ep) return true
   const p = String(ep).padStart(2, '0')
-  return new RegExp(
+  const hasEpisode = new RegExp(
     '[Ee][Pp]?\\.?\\s*' + p + '\\b|' +
     '[Ee]\\s*' + ep + '\\b|' +
     '(?:^|[-\\s])' + p + '(?=[-\\s\\[\\]])|' +
     '(?:^|[-\\s])' + ep + '(?=[-\\s\\[\\]])'
   ).test(title)
+  if (!hasEpisode) return false
+
+  const seasonMarkers = /[Ss](?:eason)?\s*0*[2-9](?:\b|[Ee])|[Ss](?:eason)?\s*1[0-9](?:\b|[Ee])|(?:2nd|3rd|\d+th)\s*[Ss]eason|\bI[I V]+\b(?![a-zA-Z])/
+  const queryHasSeason = seasonMarkers.test(queryTitle || '')
+  const resultHasSeason = seasonMarkers.test(title)
+  if (resultHasSeason && !queryHasSeason) return false
+
+  return true
 }
