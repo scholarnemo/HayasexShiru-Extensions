@@ -53,8 +53,8 @@ function matchesEpisode(title, ep, queryTitle) {
   const hasEpisode = new RegExp(
     '[Ee][Pp]?\\.?\\s*' + p + '\\b|' +
     '[Ee]\\s*' + ep + '\\b|' +
-    '(?:^|[-\\s])' + p + '(?=[-\\s\\[\\]])|' +
-    '(?:^|[-\\s])' + ep + '(?=[-\\s\\[\\]])'
+    '(?:^|[-\\s\\(])' + p + '(?=[-\\s\\[\\]\\)]|$)|' +
+    '(?:^|[-\\s\\(])' + ep + '(?=[-\\s\\[\\]\\)]|$)'
   ).test(title)
   if (!hasEpisode) return false
 
