@@ -14,8 +14,8 @@
     "code": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/sukebei.js"
   },
   {
-    "id": "hayase.extension.nyaasi",
-    "name": "Nyaa",
+    "id": "hayase.extension.nyaanew",
+    "name": "NyaaSrc",
     "version": "1.0.7",
     "type": "torrent",
     "accuracy": "medium",
