@@ -26,19 +26,5 @@
     "icon": "https://sukebei.nyaa.si/static/favicon.png",
     "update": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/index.json",
     "code": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/sukebei.js"
-  },
-  {
-    "id": "hayase.extension.animetosho",
-    "name": "Animetosho",
-    "version": "1.0.2",
-    "type": "torrent",
-    "accuracy": "medium",
-    "ratio": 0,
-    "media": "both",
-    "languages": ["all"],
-    "nsfw": false,
-    "icon": "https://animetosho.org/inc/favicon.ico?cache=37381f97e8ac6694b319d0fef817662b",
-    "update": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/index.json",
-    "code": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/animetosho.js"
   }
 ]
