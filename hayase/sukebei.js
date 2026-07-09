@@ -11,9 +11,11 @@ export default new class Sukebei {
 
   async search(title, episode) {
     try {
-      let query = title.replace(/[^\w\s-]/g, ' ').trim()
+      let query = title.split(/[,:;]\s*/)[0].trim()
+      query = query.replace(/[^\w\s-]/g, ' ').trim()
+      query = query.replace(/\b(?:II|III|IV|VI|VII|VIII|IX|X)\b/gi, '').trim()
       let words = query.split(/\s+/).filter(Boolean)
-      if (words.length > 5) query = words.slice(0, 5).join(' ')
+      if (words.length > 3) query = words.slice(0, 3).join(' ')
 
       const res = await fetch(this.base + encodeURIComponent(query))
       if (!res.ok) return []
