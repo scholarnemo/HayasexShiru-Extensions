@@ -23,7 +23,7 @@
     "media": "both",
     "languages": ["all"],
     "nsfw": false,
-    "icon": "https://nyaa.si/static/favicon.png",
+    "icon": "https://sukebei.nyaa.si/static/favicon.png",
     "update": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/index.json",
     "code": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/nyaasi.js"
   }
