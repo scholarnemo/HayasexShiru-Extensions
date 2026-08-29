@@ -2,8 +2,11 @@ export default new class NyaaSi {
   base = 'https://hayase-nyaa-proxy.vercel.app/api/nyaasi/'
 
   async single({ titles, episode }) {
-    if (!titles?.length) return []
-    return this.search(titles[0], episode)
+    if (!titles || !titles.length) return []
+    const title = titles
+      .filter(t => typeof t === 'string' && t.trim() && /^[\x20-\x7E]+$/.test(t))
+      .sort((a, b) => b.length - a.length)[0] || titles[0]
+    return this.search(title, episode)
   }
 
   batch = this.single
@@ -11,14 +14,9 @@ export default new class NyaaSi {
 
   async search(title, episode) {
     try {
-      let query = title.split(/[,:;]\s*/)[0].trim()
-      if (query.split(/\s+/).length <= 1) {
-        query = title.split(/[,:;]\s*/, 2).map(p => p.trim()).join(' ')
-      }
+      let query = title.split(/[,:;]\s*/, 2).map(p => p.trim()).join(' ')
       query = query.replace(/[^\w\s-]/g, ' ').trim()
       query = query.replace(/\b(?:II|III|IV|VI|VII|VIII|IX|X)\b/gi, '').trim()
-      let words = query.split(/\s+/).filter(Boolean)
-      if (words.length > 3) query = words.slice(0, 3).join(' ')
 
       const res = await fetch(this.base + encodeURIComponent(query))
       if (!res.ok) return []
@@ -63,9 +61,10 @@ function matchesEpisode(title, ep, queryTitle) {
   ).test(title)
   if (!hasEpisode) return false
 
-  const seasonMarkers = /[Ss](?:eason)?\s*0*[2-9](?:\b|[Ee])|[Ss](?:eason)?\s*1[0-9](?:\b|[Ee])|(?:2nd|3rd|\d+th)\s*[Ss]eason|\bI[I V]+\b(?![a-zA-Z])/
-  const queryHasSeason = seasonMarkers.test(queryTitle || '')
-  const resultHasSeason = seasonMarkers.test(title)
+  const resultSeasonMarkers = /[Ss](?:eason)?\s*0*[2-9](?:\b|[Ee])|[Ss](?:eason)?\s*1[0-9](?:\b|[Ee])|(?:2nd|3rd|\d+th)\s*[Ss]eason|\bI[I V]+\b(?![a-zA-Z])/
+  const querySeasonMarkers = /[Ss](?:eason)?\s*0*[2-9](?:\b|[Ee])|[Ss](?:eason)?\s*1[0-9](?:\b|[Ee])|(?:2nd|3rd|\d+th)\s*[Ss]eason|\bI[I V]+\b(?![a-zA-Z])|\b[2-9]\s*$/
+  const queryHasSeason = querySeasonMarkers.test(queryTitle || '')
+  const resultHasSeason = resultSeasonMarkers.test(title)
   if (resultHasSeason && !queryHasSeason) return false
 
   return true
