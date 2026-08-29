@@ -23,7 +23,7 @@ export default new class Animetosho {
       const data = await res.json()
       if (!Array.isArray(data)) return []
 
-      return data.map(item => ({
+      const mapped = data.map(item => ({
         title: item.Name,
         link: item.Magnet,
         hash: item.hash || item.Magnet?.match(/btih:([A-Fa-f0-9]+)/)?.[1] || '',
@@ -34,7 +34,10 @@ export default new class Animetosho {
         date: item.DateUploaded ? new Date(item.DateUploaded) : new Date(),
         accuracy: 'medium',
         type: 'alt'
-      })).filter(r => matchesEpisode(r.title, episode, title))
+      }))
+      const exact = mapped.filter(r => matchesEpisode(r.title, episode, title))
+      if (exact.length > 0) return exact
+      return mapped.filter(r => !wrongSeason(r.title, title))
     } catch {
       return []
     }
@@ -50,6 +53,13 @@ export default new class Animetosho {
   }
 }()
 
+function wrongSeason(title, queryTitle) {
+  const markers = /[Ss](?:eason)?\s*0*[2-9](?:\b|[Ee])|[Ss](?:eason)?\s*1[0-9](?:\b|[Ee])|(?:2nd|3rd|\d+th)\s*[Ss]eason|\bI[I V]+\b(?![a-zA-Z])/
+  const resultHas = markers.test(title)
+  const queryHas = markers.test(queryTitle || '') || /\b[2-9]\s*$/.test(queryTitle || '')
+  return resultHas && !queryHas
+}
+
 function matchesEpisode(title, ep, queryTitle) {
   if (!ep) return true
   const p = String(ep).padStart(2, '0')
@@ -60,12 +70,6 @@ function matchesEpisode(title, ep, queryTitle) {
     '(?:^|[-\\s\\(])' + ep + '(?=[-\\s\\[\\]\\)]|$)'
   ).test(title)
   if (!hasEpisode) return false
-
-  const resultSeasonMarkers = /[Ss](?:eason)?\s*0*[2-9](?:\b|[Ee])|[Ss](?:eason)?\s*1[0-9](?:\b|[Ee])|(?:2nd|3rd|\d+th)\s*[Ss]eason|\bI[I V]+\b(?![a-zA-Z])/
-  const querySeasonMarkers = /[Ss](?:eason)?\s*0*[2-9](?:\b|[Ee])|[Ss](?:eason)?\s*1[0-9](?:\b|[Ee])|(?:2nd|3rd|\d+th)\s*[Ss]eason|\bI[I V]+\b(?![a-zA-Z])|\b[2-9]\s*$/
-  const queryHasSeason = querySeasonMarkers.test(queryTitle || '')
-  const resultHasSeason = resultSeasonMarkers.test(title)
-  if (resultHasSeason && !queryHasSeason) return false
-
+  if (wrongSeason(title, queryTitle)) return false
   return true
 }
