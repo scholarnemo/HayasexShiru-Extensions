@@ -16,7 +16,12 @@ export default new class NyaaSi {
     try {
       let query = title.split(/[,:;]\s*/, 2).map(p => p.trim()).join(' ')
       query = query.replace(/[^\w\s-]/g, ' ').trim()
-      query = query.replace(/\b(?:II|III|IV|VI|VII|VIII|IX|X)\b/gi, '').trim()
+      const rnMap = { II: 2, III: 3, IV: 4, V: 5, VI: 6, VII: 7, VIII: 8, IX: 9, X: 10 }
+      let seasonNum = null
+      const rnMatch = query.match(/\b(I{1,3}|IV|V|VI{0,3}|IX|X)\b/)
+      if (rnMatch && rnMap[rnMatch[1]]) seasonNum = rnMap[rnMatch[1]]
+      query = query.replace(/\b(I{1,3}|IV|V|VI{0,3}|IX|X)\b/g, '').trim()
+      if (seasonNum) query = query + ' S' + seasonNum
 
       const res = await fetch(this.base + encodeURIComponent(query))
       if (!res.ok) return []
