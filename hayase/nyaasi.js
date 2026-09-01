@@ -42,7 +42,9 @@ export default new class NyaaSi {
       }))
       const exact = mapped.filter(r => matchesEpisode(r.title, episode, title))
       if (exact.length > 0) return exact
-      return mapped.filter(r => !wrongSeason(r.title, title))
+      const seasonOk = mapped.filter(r => !wrongSeason(r.title, title))
+      if (seasonOk.length > 0) return seasonOk
+      return mapped
     } catch {
       return []
     }
