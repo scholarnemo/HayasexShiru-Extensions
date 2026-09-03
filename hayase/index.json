@@ -1,8 +1,8 @@
 [
   {
-    "id": "hayase.extension.nyaanew",
+    "id": "hayase.extension.nyaav3",
     "name": "Nyaa",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "type": "torrent",
     "accuracy": "medium",
     "ratio": 0,
@@ -10,13 +10,13 @@
     "languages": ["all"],
     "nsfw": false,
     "icon": "https://nyaa.si/static/favicon.png",
-    "update": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/index.json?v=300",
-    "code": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/nyaasi.js?v=300"
+    "update": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/index.json?v=400",
+    "code": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/nyaasi_v2.js?v=1"
   },
   {
-    "id": "hayase.extension.sukebei",
+    "id": "hayase.extension.sukebeiv3",
     "name": "Sukebei",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "type": "torrent",
     "accuracy": "medium",
     "ratio": 0,
@@ -24,13 +24,13 @@
     "languages": ["all"],
     "nsfw": true,
     "icon": "https://sukebei.nyaa.si/static/favicon.png",
-    "update": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/index.json?v=300",
-    "code": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/sukebei.js?v=300"
+    "update": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/index.json?v=400",
+    "code": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/sukebei_v2.js?v=1"
   },
   {
-    "id": "hayase.extension.animetosho",
+    "id": "hayase.extension.animetosov3",
     "name": "Animetosho",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "type": "torrent",
     "accuracy": "medium",
     "ratio": 0,
@@ -38,7 +38,7 @@
     "languages": ["all"],
     "nsfw": false,
     "icon": "https://animetosho.org/inc/favicon.ico?cache=37381f97e8ac6694b319d0fef817662b",
-    "update": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/index.json?v=300",
-    "code": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/animetosho.js?v=300"
+    "update": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/index.json?v=400",
+    "code": "https://raw.githubusercontent.com/scholarnemo/HayasexShiru-Extensions/main/hayase/animetosho_v2.js?v=1"
   }
 ]
