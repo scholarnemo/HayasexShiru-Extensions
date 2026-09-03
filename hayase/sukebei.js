@@ -16,12 +16,9 @@ export default new class Sukebei {
     try {
       let query = title.split(/[,:;]\s*/, 2).map(p => p.trim()).join(' ')
       query = query.replace(/[^\w\s]/g, ' ').trim()
-      const rnMap = { II: 2, III: 3, IV: 4, V: 5, VI: 6, VII: 7, VIII: 8, IX: 9, X: 10 }
-      let seasonNum = null
-      const rnMatch = query.match(/\b(I{1,3}|IV|V|VI{0,3}|IX|X)\b/)
-      if (rnMatch && rnMap[rnMatch[1]]) seasonNum = rnMap[rnMatch[1]]
-      query = query.replace(/\b(I{1,3}|IV|V|VI{0,3}|IX|X)\b/g, '').trim()
-      if (seasonNum) query = query + ' S' + seasonNum
+      query = query.replace(/\b\d+(?:st|nd|rd|th)\s+[Ss]eason\b|\b[Ss]eason\s*\d+\b/g, ' ').trim()
+      query = query.replace(/\b(I{1,3}|IV|V|VI{0,3}|IX|X)\b|\b[Ss][0-9]+\b/g, ' ').trim()
+      query = query.replace(/\s+/g, ' ').trim()
 
       const res = await fetch(this.base + encodeURIComponent(query))
       if (!res.ok) return []
@@ -40,11 +37,9 @@ export default new class Sukebei {
         accuracy: 'medium',
         type: 'alt'
       }))
-      const exact = mapped.filter(r => matchesEpisode(r.title, episode, title))
-      if (exact.length > 0) return exact
       const seasonOk = mapped.filter(r => !wrongSeason(r.title, title))
-      if (seasonOk.length > 0) return seasonOk
-      return mapped
+      const pool = (seasonOk.length > 0 ? seasonOk : mapped).slice().sort((a, b) => b.seeders - a.seeders)
+      return pool
     } catch {
       return []
     }
